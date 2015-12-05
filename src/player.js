@@ -8,10 +8,13 @@ export default class Player {
     this.radius = 70;
     this.padLength = 60;
     this.currentPadPos = 30;
+    this.padMovement = 0;
+    this.maxSpeed = 4;
+    this.directionChanged = false;
   }
 
   update(delta) {
-    this.currentPadPos = (this.currentPadPos += 1) % 360;
+    this.currentPadPos = (this.currentPadPos += this.padMovement) % 360;
   }
 
   draw(context) {
@@ -31,6 +34,32 @@ export default class Player {
   getRadians(dgrs) {
     var degrees = ( Math.PI/180 ) * dgrs;
     return degrees;
+  }
+
+
+  moveLeft(){
+    if(!this.directionChanged) {
+      this.directionChanged = true;
+      this.padMovement = 1;
+    }
+    if(this.padMovement < this.maxSpeed) {
+      this.padMovement += 0.1;
+    }
+  }
+
+  moveRight() {
+    if(!this.directionChanged) {
+      this.directionChanged = true;
+      this.padMovement = -1;
+    }
+    if(this.padMovement > -this.maxSpeed) {
+      this.padMovement -= 0.1;
+    }
+  }
+
+  moveStop() {
+    this.directionChanged = false;
+    this.padMovement = 0;
   }
 
 }

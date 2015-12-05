@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import Trianglify from 'trianglify'
 
+import socket from 'socket.io-client'
+
 import context, { updateCanvasSize } from './canvas'
 import Player from './player'
 import Pogario_Loadbar from './pogario_logo'
@@ -9,6 +11,10 @@ var player = new Player();
 var logo = new Pogario_Loadbar();
 
 window.addEventListener('resize', updateCanvasSize, false);
+window.addEventListener('keyup', keyUp, false);
+window.addEventListener('keydown', keyDown, false);
+
+
 updateCanvasSize();
 
 var thisTime = new Date().getTime();
@@ -42,4 +48,30 @@ function draw() {
 function update(delta) {
   player.update(delta);
   logo.update(delta);
+}
+
+function keyDown(event) {
+  switch(event.keyCode) {
+    case 65:
+    case 37:
+      player.moveLeft();
+      break;
+    case 68:
+    case 39:
+      player.moveRight();
+      break;
+  }
+}
+
+
+
+function keyUp(event) {
+  switch(event.keyCode) {
+  case 65:
+  case 68:
+  case 39:
+  case 37:
+    player.moveStop();
+    break;
+  }
 }
