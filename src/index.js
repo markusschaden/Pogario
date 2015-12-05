@@ -1,7 +1,5 @@
 import _ from 'lodash'
 import Trianglify from 'trianglify'
-import SAT from 'sat'
-import Victor from 'victor'
 import socket from 'socket.io-client'
 import Pogario_Loadbar from './pogario_logo'
 
@@ -9,10 +7,12 @@ import context, { updateCanvasSize } from './canvas'
 import Map from './map'
 import Player from './player'
 import Ball from './ball'
+import Geometry from './geometry'
 
 var logo = new Pogario_Loadbar();
 var map = new Map();
 var player = new Player();
+
 var ball = new Ball();
 
 window.addEventListener('resize', updateCanvasSize, false);
@@ -56,54 +56,19 @@ loop();
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
-  logo.draw(context);
+    logo.draw(context);
     map.draw(context);
     ball.draw(context);
     player.draw(context);
 }
 
 function update(delta) {
-  logo.update(delta);
+    logo.update(delta);
     player.update(delta);
     ball.update(delta);
 
-    collision();
-}
-
-function collision() {
-    var circle = new SAT.Circle(new SAT.Vector(ball.x, ball.y), ball.radius);
-    changeDirection();
-
-    var response = new SAT.Response();
-    var circlePlayer = new SAT.Circle(new SAT.Vector(player.x, player.y), player.radius);
-    if (SAT.testCircleCircle(circle, circlePlayer, response)) {
-        var angleBall = new Victor(ball.x - player.x, ball.y - player.y).angleDeg();
-        angleBall = (angleBall < 0) ? 360 + angleBall : angleBall;
-
-        if (Math.abs(angleBall - player.currentPadPos) < player.padLength / 2) {
-            ball.direction.invert();
-            ball.direction.rotateDeg(90 * (angleBall - player.currentPadPos) / (player.padLength/2));
-            //player.radius += 5;
-        }
-    }
-}
-
-function changeDirection() {
-    if ((ball.direction.x > 0) && (ball.x + ball.radius > map.width + map.x)) {
-        ball.x = map.width + map.x - ball.radius;
-        ball.direction.invertX();
-    } else if ((ball.direction.x < 0) && (ball.x - ball.radius < map.x)) {
-        ball.x = map.x + ball.radius;
-        ball.direction.invertX();
-    }
-
-    if ((ball.direction.y > 0) && (ball.y + ball.radius > map.height + map.y)) {
-        ball.y = map.height + map.y - ball.radius;
-        ball.direction.invertY();
-    } else if ((ball.direction.y < 0) && (ball.y - ball.radius < map.y)) {
-        ball.y = map.y + ball.radius;
-        ball.direction.invertY();
-    }
+    Geometry.collisionMapBall(map, ball);
+    Geometry.collisionPlayerBall(player, ball);
 }
 
 function keyDown(event) {

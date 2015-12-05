@@ -1,41 +1,43 @@
-export default class Geometry {
-    constructor() {}    
+import SAT from 'sat'
+import Victor from 'victor'
     
-    static containsCircleCircle(circle1, circle2) {
-        var dx = circle1.x - circle2.x;
-        var dy = circle1.y - circle2.y;
-        var distance = Math.sqrt(dx * dx + dy * dy);
+export default class Geometry {
+    constructor() {}
+    
+    static collisionMapBall(map, ball) {
+        if ((ball.direction.x > 0) && (ball.x + ball.radius > map.width + map.x)) {
+            ball.x = map.width + map.x - ball.radius;
+            ball.direction.invertX();
+        } else if ((ball.direction.x < 0) && (ball.x - ball.radius < map.x)) {
+            ball.x = map.x + ball.radius;
+            ball.direction.invertX();
+        }
 
-        return (distance < circle1.radius + circle2.radius);
+        if ((ball.direction.y > 0) && (ball.y + ball.radius > map.height + map.y)) {
+            ball.y = map.height + map.y - ball.radius;
+            ball.direction.invertY();
+        } else if ((ball.direction.y < 0) && (ball.y - ball.radius < map.y)) {
+            ball.y = map.y + ball.radius;
+            ball.direction.invertY();
+        }
     }
+    
+    static collisionPlayerBall(player, ball) {
+        var circle = new SAT.Circle(new SAT.Vector(ball.x, ball.y), ball.radius);
+        var circlePlayer = new SAT.Circle(new SAT.Vector(player.x, player.y), player.radius);
+        var response = new SAT.Response();
+        if (SAT.testCircleCircle(circle, circlePlayer, response)) {
+            var angleBall = new Victor(ball.x - player.x, ball.y - player.y).angleDeg();
+            angleBall = (angleBall < 0) ? 360 + angleBall : angleBall;
 
-    static containsBoxBox(box1, box2) {
-        return (box1.x < box2.x + box2.width &&
-            box1.x + box1.width > box2.x &&
-            box1.y < box2.y + box2.height &&
-            box1.height + box1.y > box2.y);
-    }
-
-    static containsCircleBox(circle, box) {
-        var distX = Math.abs(circle.x - box.x - box.width / 2);
-        var distY = Math.abs(circle.y - box.y - box.height / 2);
-
-        if (distX > (box.width / 2 + circle.radius)) {
-            return false;
+            if (Math.abs(angleBall - player.currentPadPos) < player.padLength / 2) {
+                ball.direction.invert();
+                ball.direction.rotateDeg(90 * (angleBall - player.currentPadPos) / (player.padLength / 2));
+                //player.radius += 5;
+            } else {
+                ball.x = 10;
+                ball.y = 10;
+            }
         }
-        if (distY > (box.height / 2 + circle.radius)) {
-            return false;
-        }
-
-        if (distX <= (box.width / 2)) {
-            return true;
-        }
-        if (distY <= (box.height / 2)) {
-            return true;
-        }
-
-        var dx = distX - box.width / 2;
-        var dy = distY - box.height / 2;
-        return (dx * dx + dy * dy <= (circle.radius * circle.radius));
     }
 }
