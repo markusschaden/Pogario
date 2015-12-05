@@ -31,7 +31,7 @@ gulp.task('scripts', function () {
     .pipe(sourcemaps.init({
       loadMaps: true
     }))
-    on('error', gutil.log)
+    .on('error', gutil.log)
     .pipe(sourcemaps.write(''))
     .pipe(gulp.dest('dist'))
 })
