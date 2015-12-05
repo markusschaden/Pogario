@@ -1,6 +1,8 @@
 import _ from 'lodash'
 import Trianglify from 'trianglify'
 
+import socket from 'socket.io-client'
+
 import context, { updateCanvasSize } from './canvas'
 import Player from './player'
 var player = new Player();
