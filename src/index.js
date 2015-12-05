@@ -2,15 +2,15 @@ import _ from 'lodash'
 import Trianglify from 'trianglify'
 import SAT from 'sat'
 import Victor from 'victor'
+import socket from 'socket.io-client'
+import Pogario_Loadbar from './pogario_logo'
 
-import context, {
-    updateCanvasSize
-}
-from './canvas'
+import context, { updateCanvasSize } from './canvas'
 import Map from './map'
 import Player from './player'
 import Ball from './ball'
 
+var logo = new Pogario_Loadbar();
 var map = new Map();
 var player = new Player();
 var ball = new Ball();
@@ -56,12 +56,14 @@ loop();
 function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
+  logo.draw(context);
     map.draw(context);
     ball.draw(context);
     player.draw(context);
 }
 
 function update(delta) {
+  logo.update(delta);
     player.update(delta);
     ball.update(delta);
 
