@@ -1,16 +1,29 @@
 import _ from 'lodash'
 import Trianglify from 'trianglify'
 
-import socket from 'socket.io-client'
+import io from 'socket.io-client'
 
 import context, { updateCanvasSize } from './canvas'
 import Player from './player'
-var player = new Player();
+var player1 = new Player();
+var player2 = new Player();
+player2.x = 600;
 
 window.addEventListener('resize', updateCanvasSize, false);
 window.addEventListener('keyup', keyUp, false);
 window.addEventListener('keydown', keyDown, false);
 
+let socket = io()
+
+socket.on('time sync', function (time) {
+  let myTime = new Date().getTime()
+  console.log(`got a time sync from server, it's ${time}. Mine is ${myTime}!`);
+});
+
+let time = new Date().getTime()
+
+console.log(`sending ${time}`)
+socket.emit('time sync', time)
 
 updateCanvasSize();
 
@@ -38,22 +51,24 @@ loop();
 
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
-  player.draw(context);
+  player1.draw(context);
+  player2.draw(context);
 }
 
 function update(delta) {
-  player.update(delta);
+  player1.update(delta);
+  player2.update(delta);
 }
 
 function keyDown(event) {
   switch(event.keyCode) {
     case 65:
     case 37:
-      player.moveLeft();
+      player1.moveLeft();
       break;
     case 68:
     case 39:
-      player.moveRight();
+      player1.moveRight();
       break;
   }
 }
@@ -66,7 +81,7 @@ function keyUp(event) {
   case 68:
   case 39:
   case 37:
-    player.moveStop();
+    player1.moveStop();
     break;
   }
 }

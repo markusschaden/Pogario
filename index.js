@@ -1,10 +1,16 @@
 import http from 'http'
+import express from 'express'
 import colors from 'colors'
 import socketio from 'socket.io'
+import serveStatic from 'serve-static'
+
 import Messenger from './lib/messenger'
 
-let server = http.createServer()
-let io = socketio(server)
+let app = express()
+let server = http.createServer(app)
+let io = socketio.listen(server)
+
+app.use(serveStatic('dist'))
 
 let host = process.env.HOST || '0.0.0.0'
 let port = process.env.PORT || 3000
