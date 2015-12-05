@@ -35,7 +35,9 @@
     "node-notifier": "^4.3.1",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
+    "sat": "^0.5.0",
     "trianglify": "^0.4.0",
+    "victor": "^1.1.0",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0"
   }
