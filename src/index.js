@@ -2,6 +2,8 @@ import _ from 'lodash'
 import Trianglify from 'trianglify'
 
 import context, { updateCanvasSize } from './canvas'
+import Player from './player'
+var player = new Player();
 
 window.addEventListener('resize', updateCanvasSize, false);
 updateCanvasSize();
@@ -28,56 +30,11 @@ function loop() {
 
 loop();
 
-
-var currentPos = 30;
+function draw() {
+  context.clearRect(0, 0, canvas.width, canvas.height);
+  player.draw(context);
+}
 
 function update(delta) {
-
-  currentPos = (currentPos += 1) % 360;
-
-
-}
-
-
-
-function draw() {
-
-  var x = 300;
-  var y = 300;
-
-  var size = 60;
-  var radius = 70;
-  var padLength = 60;
-
-
-  context.clearRect(0, 0, canvas.width, canvas.height);
-
-
-  context.beginPath();
-  context.arc(x, y, radius, 0, 2 * Math.PI, false);
-  context.fillStyle = 'green';
-  context.fill();
-  context.lineWidth = 5;
-  context.strokeStyle = '#003300';
-  context.stroke();
-
-
-
-
-    context.beginPath();
-    context.arc(x,y,radius,getRadians(currentPos),getRadians(currentPos+padLength));
-    context.lineWidth = 10;
-    context.strokeStyle = 'red';
-    context.stroke();
-
-
-}
-
-
-
-function getRadians(dgrs) {
-
-  var degrees = ( Math.PI/180 ) * dgrs;
-  return degrees;
-
+  player.update(delta);
 }
