@@ -64,15 +64,15 @@ function draw() {
 function update(delta) {
     player.update(delta);
     ball.update(delta);
+
     collision();
 }
 
 function collision() {
-    var polygon = new SAT.Box(new SAT.Vector(map.x, map.y), map.width, map.height).toPolygon();
     var circle = new SAT.Circle(new SAT.Vector(ball.x, ball.y), ball.radius);
-    var response = new SAT.Response();
     changeDirection();
 
+    var response = new SAT.Response();
     var circlePlayer = new SAT.Circle(new SAT.Vector(player.x, player.y), player.radius);
     if (SAT.testCircleCircle(circle, circlePlayer, response)) {
         var angleBall = new Victor(ball.x - player.x, ball.y - player.y).angleDeg();
@@ -80,6 +80,7 @@ function collision() {
 
         if (Math.abs(angleBall - player.currentPadPos) < player.padLength / 2) {
             ball.direction.invert();
+            ball.direction.rotateDeg(90 * (angleBall - player.currentPadPos) / (player.padLength/2));
             //player.radius += 5;
         }
     }

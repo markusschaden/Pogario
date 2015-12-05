@@ -5,7 +5,7 @@ export default class Ball {
         this._radius = 15;
         this._x = 50;
         this._y = 50;
-        this._direction = new Victor(0.1, 0.1);
+        this._direction = new Victor(0.25, 0.25);
     }
 
     get x() {
