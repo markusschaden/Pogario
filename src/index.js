@@ -1,9 +1,10 @@
 import _ from 'lodash'
 import Trianglify from 'trianglify'
 
-import canvas, { updateCanvasSize } from './canvas'
+import context, { updateCanvasSize } from './canvas'
 
 window.addEventListener('resize', updateCanvasSize, false);
+updateCanvasSize();
 
 var thisTime = new Date().getTime();
 var delta = 0;
@@ -18,7 +19,7 @@ function loop() {
 	lastTime = thisTime;
 
 	//update(delta);
-	//draw();
+	draw();
 
 	interval = targetInterval - (new Date().getTime() - thisTime);
 	interval = interval < 1 ? 1 : interval;
@@ -27,4 +28,18 @@ function loop() {
 
 loop();
 
-updateCanvasSize()
+function draw() {
+
+  context.beginPath();
+  context.arc(300,300,40,getRadians(30),getRadians(90));
+  context.lineWidth = 15;
+}
+
+
+
+function getRadians(dgrs) {
+
+  var degrees = ( Math.PI/180 ) * dgrs;
+  return degrees;
+
+}
