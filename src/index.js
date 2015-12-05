@@ -1,21 +1,10 @@
 import _ from 'lodash'
 import Trianglify from 'trianglify'
 
-//import Player from './player'
+import context, { updateCanvasSize } from './canvas'
 
-let canvasWrapper = document.getElementById("canvasWrapper");
-let canvas = document.getElementById("canvas");
-let ctx = canvas.getContext("2d");
-
-// resize the canvas to fill browser window dynamically
-window.addEventListener('resize', resizeCanvas, false);
-
-function resizeCanvas() {
-  canvas.width = canvasWrapper.clientWidth;
-  canvas.height = canvasWrapper.clientHeight;
-}
-resizeCanvas();
-
+window.addEventListener('resize', updateCanvasSize, false);
+updateCanvasSize();
 
 var thisTime = new Date().getTime();
 var delta = 0;
@@ -39,12 +28,11 @@ function loop() {
 
 loop();
 
-
 function draw() {
 
-  ctx.beginPath();
-  ctx.arc(300,300,40,getRadians(30),getRadians(90));
-  ctx.lineWidth = 15;
+  context.beginPath();
+  context.arc(300,300,40,getRadians(30),getRadians(90));
+  context.lineWidth = 15;
 }
 
 
