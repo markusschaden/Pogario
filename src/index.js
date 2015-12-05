@@ -18,7 +18,7 @@ function loop() {
 	delta = thisTime-lastTime;
 	lastTime = thisTime;
 
-	//update(delta);
+	update(delta);
 	draw();
 
 	interval = targetInterval - (new Date().getTime() - thisTime);
@@ -28,11 +28,39 @@ function loop() {
 
 loop();
 
+
+var currentPos = 30;
+
+function update(delta) {
+
+  currentPos = (currentPos += 0.5) % 360;
+
+
+}
+
+
+
 function draw() {
 
+  var x = 300;
+  var y = 300;
+
+  var size = 60;
+  var radius = 70;
+  var padLength = 60;
+  
+  context.clearRect(0, 0, canvas.width, canvas.height);
+
   context.beginPath();
-  context.arc(300,300,40,getRadians(30),getRadians(90));
-  context.lineWidth = 15;
+  context.arc(x, y, radius, 0, 2 * Math.PI, false);
+  context.lineWidth = 5;
+  context.strokeStyle = 'green';
+  context.stroke();
+
+  context.arc(x,y,radius,getRadians(currentPos),getRadians(currentPos+padLength));
+  context.lineWidth = 10;
+  context.strokeStyle = 'yello';
+  context.stroke();
 }
 
 
