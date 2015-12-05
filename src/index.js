@@ -3,7 +3,10 @@ import Trianglify from 'trianglify'
 
 import context, { updateCanvasSize } from './canvas'
 import Player from './player'
+import Pogario_Loadbar from './pogario_logo'
+
 var player = new Player();
+var logo = new Pogario_Loadbar();
 
 window.addEventListener('resize', updateCanvasSize, false);
 updateCanvasSize();
@@ -33,8 +36,10 @@ loop();
 function draw() {
   context.clearRect(0, 0, canvas.width, canvas.height);
   player.draw(context);
+  logo.draw(context);
 }
 
 function update(delta) {
   player.update(delta);
+  logo.update(delta);
 }
