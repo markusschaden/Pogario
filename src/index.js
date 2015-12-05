@@ -30,7 +30,7 @@ function loop() {
 	lastTime = thisTime;
 
 	//update(delta);
-	//draw();
+	draw();
 
 	interval = targetInterval - (new Date().getTime() - thisTime);
 	interval = interval < 1 ? 1 : interval;
@@ -38,3 +38,20 @@ function loop() {
 }
 
 loop();
+
+
+function draw() {
+
+  ctx.beginPath();
+  ctx.arc(300,300,40,getRadians(30),getRadians(90));
+  ctx.lineWidth = 15;
+}
+
+
+
+function getRadians(dgrs) {
+
+  var degrees = ( Math.PI/180 ) * dgrs;
+  return degrees;
+
+}
