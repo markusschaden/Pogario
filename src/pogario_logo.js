@@ -1,11 +1,10 @@
 export default class Pogario_Loadbar {
 
   constructor() {
+    this.radius = canvas.width/5;
     this.x = 100;
-    this.y = 700;
+    this.y = this.radius;
 
-    this.size = 60;
-    this.radius = 75;
     this.padLength = 60;
     this.currentPadPos = 30;
     this.currChar = this.update_p;
@@ -175,7 +174,22 @@ export default class Pogario_Loadbar {
     context.stroke();
   }
 
+  draw_point(context, position) {
+      context.beginPath();
+      context.arc(this.x+position*(3*this.radius)+this.radius*1.5, this.y+this.radius, this.radius/6, 0, 2 * Math.PI, false);
+      context.fillStyle = 'blue';
+      context.fill();
+      context.lineWidth = 5;
+      context.strokeStyle = '#3333AA';
+      context.stroke();
+      context.closePath();
+  }
+
   draw(context) {
+    this.radius = canvas.width/21;
+    this.x = this.radius+this.radius/2;
+    this.y = this.radius+10;
+    this.draw_point(context, 4);
     this.draw_p(context,0, 0, 0);
     this.draw_o(context,1, 5, 0);
     this.draw_g(context,2, 10, 0);

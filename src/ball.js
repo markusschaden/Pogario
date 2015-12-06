@@ -4,7 +4,7 @@ export default class Ball {
     constructor() {
         this._radius = 15;
         this._x = 50;
-        this._y = 50;
+        this._y = 3*canvas.width/21 + 70;
         this._direction = new Victor(0.25, 0.25);
     }
 

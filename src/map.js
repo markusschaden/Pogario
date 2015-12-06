@@ -1,7 +1,7 @@
 export default class Map {
     constructor() {
         this._x = 0;
-        this._y = 0;
+        this._y = canvas.width/21;
         this._width = 500;
         this._height = 500;
     }
@@ -33,6 +33,7 @@ export default class Map {
 
     draw(ctx) {
         ctx.beginPath();
+        this._y = 3*canvas.width/21 + 20;
         ctx.strokeRect(this._x, this._y, this._width, this._height);
         ctx.closePath();
     }
