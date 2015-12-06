@@ -5,20 +5,17 @@ import io from 'socket.io-client'
 import Pogario_Loadbar from './pogario_logo'
 
 import context, { updateCanvasSize } from './canvas'
-import Map from './map'
-import Player from './player'
 
-import Ball from './ball'
-import Geometry from './geometry'
+import Manager from './manager'
 
 var logo = new Pogario_Loadbar();
-var map = new Map();
+var manager = new Manager();
 
-var player1 = new Player();
-var player2 = new Player();
+var player1 = manager.newPlayer();
+var player2 = manager.newPlayer();
 player2.x = 600;
 
-var ball = new Ball();
+var ball = manager.newBall();
 
 window.addEventListener('resize', updateCanvasSize, false);
 window.addEventListener('keyup', keyUp, false);
@@ -81,16 +78,6 @@ socket.emit('time sync', time)
 
 updateCanvasSize();
 
-// Converts from degrees to radians.
-Math.radians = function (degrees) {
-    return degrees * Math.PI / 180;
-};
-
-// Converts from radians to degrees.
-Math.degrees = function (radians) {
-    return radians * 180 / Math.PI;
-};
-
 var thisTime = new Date().getTime();
 var delta = 0;
 var lastTime = thisTime;
@@ -117,20 +104,12 @@ function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     logo.draw(context);
-    map.draw(context);
-    ball.draw(context);
-    player1.draw(context);
-    player2.draw(context);
+    manager.draw(context);
 }
 
 function update(delta) {
     logo.update(delta);
-    player1.update(delta);
-    player2.update(delta);
-    ball.update(delta);
-
-    Geometry.collisionMapBall(map, ball);
-    Geometry.collisionPlayerBall(player1, ball);
+    manager.update(delta);
 }
 
 function keyDown(event) {
