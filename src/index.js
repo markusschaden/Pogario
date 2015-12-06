@@ -62,6 +62,13 @@ socket.on('player started', function (player) {
   console.log(`player ${player.name} started game!`)
 })
 
+socket.on('ball changed', function (ball_server)  {
+  ball.direction.x = ball_server.direction.x;
+  ball.direction.y = ball_server.direction.y;
+  ball.radius = ball_server.radius;
+  ball.x = ball_server.x;
+  ball.y = ball_server.y;
+})
 
 player1.on('move right', () => socket.emit('move right'))
 player1.on('move left', () => socket.emit('move left'))
