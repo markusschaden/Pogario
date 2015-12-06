@@ -31,6 +31,49 @@ socket.on('time sync', function (time) {
   console.log(`got a time sync from server, it's ${time}. Mine is ${myTime}!`);
 });
 
+socket.on('update paddles', function (position) {
+  player2.set(position)
+})
+
+let me = Math.ceil(Math.random() * 10)
+
+socket.emit('start', me)
+
+socket.on('move right', function (player) {
+  console.log(`I'm ${me}!`)
+  console.log(`player ${player.name} moved right!`)
+
+  if (player.name != me) {
+    console.log('I like to move it move it!')
+    player2.moveRight()
+  }
+})
+
+socket.on('move left', function (player) {
+  if (player.name !== me) {
+    player2.moveLeft()
+  }
+})
+
+socket.on('move stop', function (player) {
+  if (player.name !== me) {
+    player2.moveStop()
+  }
+})
+
+socket.on('player started', function (player) {
+  console.log(`player ${player.name} started game!`)
+})
+
+
+player1.on('move right', () => socket.emit('move right'))
+player1.on('move left', () => socket.emit('move left'))
+player1.on('move stop', () => socket.emit('move stop'))
+
+
+
+
+
 let time = new Date().getTime()
 
 console.log(`sending ${time}`)
@@ -94,22 +137,25 @@ function keyDown(event) {
     switch (event.keyCode) {
     case 65:
     case 37:
-        player1.moveLeft();
-        break;
+      player1.moveLeft();
+      player1.emit('move left');
+      break;
     case 68:
     case 39:
-        player1.moveRight();
-        break;
-    }
+      player1.moveRight();
+      player1.emit('move right');
+      break;
+  }
 }
 
 function keyUp(event) {
-    switch (event.keyCode) {
-    case 65:
-    case 68:
-    case 39:
-    case 37:
-        player1.moveStop();
-        break;
-    }
+  switch(event.keyCode) {
+  case 65:
+  case 68:
+  case 39:
+  case 37:
+    player1.moveStop();
+    player1.emit('move stop');
+    break;
+  }
 }

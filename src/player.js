@@ -1,6 +1,10 @@
-export default class Player {
+import EventEmitter from 'events'
+
+export default class Player extends EventEmitter {
 
   constructor() {
+    super();
+
     this.x = 300;
     this.y = 300;
 
@@ -16,6 +20,10 @@ export default class Player {
   update(delta) {
     this.currentPadPos = (this.currentPadPos += this.padMovement) % 360;
     this.currentPadPos = (this.currentPadPos < 0) ? 360 + this.currentPadPos : this.currentPadPos;
+  }
+
+  set(pos) {
+    this.currentPadPos = pos;
   }
 
   draw(context) {
@@ -36,7 +44,6 @@ export default class Player {
     var degrees = ( Math.PI/180 ) * dgrs;
     return degrees;
   }
-
 
   moveLeft(){
     if(!this.directionChanged) {
