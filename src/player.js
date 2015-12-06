@@ -14,11 +14,11 @@ export default class Player extends EventEmitter {
     this.currentPadPos = 0;
     this.padMovement = 0;
     this.maxSpeed = 10;
-    this.directionChanged = false;
   }
 
   update(delta) {
-    this.currentPadPos = (this.currentPadPos += this.padMovement) % 360;
+    
+    this.currentPadPos = (this.currentPadPos += this.padMovement*delta) % 360;
     this.currentPadPos = (this.currentPadPos < 0) ? 360 + this.currentPadPos : this.currentPadPos;
   }
 
@@ -46,27 +46,14 @@ export default class Player extends EventEmitter {
   }
 
   moveLeft(){
-    if(!this.directionChanged) {
-      this.directionChanged = true;
-      this.padMovement = 1;
-    }
-    if(this.padMovement < this.maxSpeed) {
-      this.padMovement += 0.1;
-    }
+    this.padMovement = 2;
   }
 
   moveRight() {
-    if(!this.directionChanged) {
-      this.directionChanged = true;
-      this.padMovement = -1;
-    }
-    if(this.padMovement > -this.maxSpeed) {
-      this.padMovement -= 0.1;
-    }
+    this.padMovement = -2;
   }
 
   moveStop() {
-    this.directionChanged = false;
     this.padMovement = 0;
   }
 
