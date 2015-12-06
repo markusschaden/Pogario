@@ -7,14 +7,15 @@ export default class Player {
     this.size = 60;
     this.radius = 70;
     this.padLength = 60;
-    this.currentPadPos = 30;
+    this.currentPadPos = 0;
     this.padMovement = 0;
-    this.maxSpeed = 4;
+    this.maxSpeed = 10;
     this.directionChanged = false;
   }
 
   update(delta) {
     this.currentPadPos = (this.currentPadPos += this.padMovement) % 360;
+    this.currentPadPos = (this.currentPadPos < 0) ? 360 + this.currentPadPos : this.currentPadPos;
   }
 
   draw(context) {
@@ -25,7 +26,7 @@ export default class Player {
     context.stroke();
 
     context.beginPath();
-    context.arc(this.x,this.y,this.radius,this.getRadians(this.currentPadPos),this.getRadians(this.currentPadPos+this.padLength));
+    context.arc(this.x,this.y,this.radius,this.getRadians(this.currentPadPos-this.padLength/2),this.getRadians(this.currentPadPos+this.padLength/2));
     context.lineWidth = 10;
     context.strokeStyle = '#FF0066';
     context.stroke();
