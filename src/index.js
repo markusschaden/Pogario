@@ -2,18 +2,14 @@ import _ from 'lodash'
 import Trianglify from 'trianglify'
 import socket from 'socket.io-client'
 import Pogario_Loadbar from './pogario_logo'
+import Manager from './manager'
 
-import context, { updateCanvasSize } from './canvas'
-import Map from './map'
-import Player from './player'
-import Ball from './ball'
-import Geometry from './geometry'
+import context, {
+    updateCanvasSize
+}
+from './canvas'
 
 var logo = new Pogario_Loadbar();
-var map = new Map();
-var player = new Player();
-
-var ball = new Ball();
 
 window.addEventListener('resize', updateCanvasSize, false);
 window.addEventListener('keyup', keyUp, false);
@@ -21,21 +17,18 @@ window.addEventListener('keydown', keyDown, false);
 
 updateCanvasSize();
 
-// Converts from degrees to radians.
-Math.radians = function (degrees) {
-    return degrees * Math.PI / 180;
-};
-
-// Converts from radians to degrees.
-Math.degrees = function (radians) {
-    return radians * 180 / Math.PI;
-};
-
 var thisTime = new Date().getTime();
 var delta = 0;
 var lastTime = thisTime;
 var interval = 0;
 var targetInterval = 15;
+
+var singleGame = new Manager();
+singleGame.startSinglePlayer();
+var managers = [];
+
+// TODO: only use if offline or waiting
+managers.push(singleGame);
 
 //https://github.com/joebain/uprok/blob/master/scripts/flyrock.js#L1098
 function loop() {
@@ -57,29 +50,33 @@ function draw() {
     context.clearRect(0, 0, canvas.width, canvas.height);
 
     logo.draw(context);
-    map.draw(context);
-    ball.draw(context);
-    player.draw(context);
+
+    managers.forEach(function (manager, index) {
+        manager.draw(context);
+    });
 }
 
 function update(delta) {
     logo.update(delta);
-    player.update(delta);
-    ball.update(delta);
 
-    Geometry.collisionMapBall(map, ball);
-    Geometry.collisionPlayerBall(player, ball);
+    managers.forEach(function (manager, index) {
+        manager.update(delta);
+    });
 }
 
 function keyDown(event) {
     switch (event.keyCode) {
     case 65:
     case 37:
-        player.moveLeft();
+        singleGame.players.forEach(function (player, index) {
+            player.moveLeft();
+        });
         break;
     case 68:
     case 39:
-        player.moveRight();
+        singleGame.players.forEach(function (player, index) {
+            player.moveRight();
+        });
         break;
     }
 }
@@ -90,7 +87,9 @@ function keyUp(event) {
     case 68:
     case 39:
     case 37:
-        player.moveStop();
+        singleGame.players.forEach(function (player, index) {
+            player.moveStop();
+        });
         break;
     }
 }
