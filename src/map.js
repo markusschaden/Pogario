@@ -1,41 +1,29 @@
+import p2 from 'p2'
+import PIXI from 'pixi.js'
+
 export default class Map {
-    constructor() {
-        this._x = 0;
-        this._y = 0;
-        this._width = 500;
-        this._height = 500;
+    constructor(stage) {
+        this.x = 0;
+        this.y = 0;
+        this.width = 500;
+        this.height = 500;
+
+        this.initRender(stage);
     }
 
-    get x() {
-        return this._x;
-    }
-    set x(x) {
-        this._x = x;
-    }
-    get y() {
-        return this._y;
-    }
-    set y(y) {
-        this._y = y;
-    }
-    get width() {
-        return this._width;
-    }
-    set width(width) {
-        this._width = width;
-    }
-    get height() {
-        return this._height;
-    }
-    set height(height) {
-        this._height = height;
+    initRender(stage) {
+        this.graphics = new PIXI.Graphics();
+
+        this.graphics.lineStyle(5, 0xFF0000, 1);
+        this.graphics.drawRect(0, 0, this.width, this.height);
+
+        this.graphics.x = this.x;
+        this.graphics.y = this.y;
+
+        stage.addChild(this.graphics);
     }
 
-    draw(ctx) {
-        ctx.beginPath();
-        ctx.strokeRect(this._x, this._y, this._width, this._height);
-        ctx.closePath();
-    }
+    draw(ctx) {}
 
     update(delta) {}
 }
