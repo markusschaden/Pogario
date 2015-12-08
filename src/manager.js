@@ -36,6 +36,8 @@ export default class Manager {
 
         this.socket.on('connected', (uuid) => {
             this.uuid = uuid;
+            canvas.height = 0;
+            canvas.width = 0;
         });
 
         this.socket.on('add ball', this.addBall.bind(this));

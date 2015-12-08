@@ -3,8 +3,8 @@ let canvas = document.getElementById("canvas");
 let context = canvas.getContext("2d");
 
 export function updateCanvasSize() {
-  canvas.width = 0;//canvasWrapper.clientWidth;
-  canvas.height = 0;//canvasWrapper.clientHeight;
+  canvas.width = canvasWrapper.clientWidth;
+  canvas.height = canvasWrapper.clientHeight;
 }
 
 export default context

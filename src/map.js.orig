@@ -2,15 +2,25 @@ import p2 from 'p2'
 import PIXI from 'pixi.js'
 
 export default class Map {
+<<<<<<< HEAD
     constructor(stage) {
         this.x = 0;
-        this.y = canvas.width/21;
+        this.y = 0;
         this.width = 500;
         this.height = 500;
+=======
+    constructor() {
+        this._x = 0;
+        this._y = canvas.width/21;
+        this._width = 500;
+        this._height = 500;
+    }
+>>>>>>> 88dc343941bfe0dc9960ef277906494324f58ef2
 
         this.initRender(stage);
     }
 
+<<<<<<< HEAD
     initRender(stage) {
         this.graphics = new PIXI.Graphics();
 
@@ -21,6 +31,13 @@ export default class Map {
         this.graphics.y = this.y;
 
         stage.addChild(this.graphics);
+=======
+    draw(ctx) {
+        ctx.beginPath();
+        this._y = 3*canvas.width/21 + 20;
+        ctx.strokeRect(this._x, this._y, this._width, this._height);
+        ctx.closePath();
+>>>>>>> 88dc343941bfe0dc9960ef277906494324f58ef2
     }
 
     draw(ctx) {}

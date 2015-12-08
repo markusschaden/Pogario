@@ -16,12 +16,6 @@ let socket = io()
 var logo = new Pogario_Loadbar();
 var manager = new Manager(socket);
 
-//var player1 = manager.newPlayer();
-//var player2 = null;//manager.newPlayer();
-///player2.x = 600;
-
-//var ball = manager.newBall();
-
 window.addEventListener('resize', updateCanvasSize, false);
 window.addEventListener('keyup', keyUp, false);
 window.addEventListener('keydown', keyDown, false);
@@ -30,48 +24,10 @@ socket.on('time sync', function (time) {
     let myTime = new Date().getTime()
     console.log(`got a time sync from server, it's ${time}. Mine is ${myTime}!`);
 });
-/*
-socket.on('update paddles', function (position) {
-  player2.set(position)
-})*/
 
 let me = Math.ceil(Math.random() * 10)
 
 socket.emit('start', me)
-    /*
-    socket.on('move right', function (player) {
-      console.log(`I'm ${me}!`)
-      console.log(`player ${player.name} moved right!`)
-
-      if (player.name != me) {
-        console.log('I like to move it move it!')
-        player2.moveRight()
-      }
-    })
-
-    socket.on('move left', function (player) {
-      if (player.name !== me) {
-        player2.moveLeft()
-      }
-    })
-
-    socket.on('move stop', function (player) {
-      if (player.name !== me) {
-        player2.moveStop()
-      }
-    })
-
-    socket.on('player started', function (player) {
-      console.log(`player ${player.name} started game!`)
-    })
-
-    socket.on('ball changed', function (ball_server)  {
-      ball.direction.x = ball_server.direction.x;
-      ball.direction.y = ball_server.direction.y;
-      ball.radius = ball_server.radius;
-      ball.x = ball_server.x;
-      ball.y = ball_server.y;
-    })*/
 
 let time = new Date().getTime()
 
